@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>React and EventBus hook</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+    <p>each button component&apos;s code as below:</p>
+    <pre>
+export default function CountdownTimer ({ timer }): JSX.Element {
+  const [on] = <b>useEventBus(timer)</b> // &lt;- custom hook
+  const [time, setTime] = useState(timer.remain)
+  const [state, setState] = useState(timer.state)
+
+  on('start, stop, done, reset', () => {
+    setState(timer.state)
+  })
+  on('countdown', (e: any) => {
+    setTime(e)
+  })
+  on('reset', () => {
+    setTime(timer.remain)
+  })
+
+  return (
+    &lt;button date-role="countdown" onClick={
+      switch (timer.state) {
+      case 'processing':
+        timer.stop()
+        break
+      case 'done':
+        timer.reset()
+        break
+      default:
+        timer.start()
+      }
+    }&gt;{time}&lt;/button&gt;
+  )
+}
+    </pre>
+  </body>
+</html>

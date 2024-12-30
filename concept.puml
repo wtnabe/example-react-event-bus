@@ -1,0 +1,29 @@
+@startuml
+!theme plain
+
+rectangle Components as component {
+  rectangle "on, dispatch, off" as component_listeners #line.bold {
+  }
+}
+
+package package {
+  rectangle eventBusInjectable as injectable {
+  }
+  rectangle useEventBus as hook {
+  }
+  rectangle <&script>mitt {
+  }
+}
+rectangle Model as model #line.bold {
+}
+rectangle "on, dispatchm, off" as raw_listeners #line.bold {
+}
+
+component_listeners <- hook : for reactive of\nmodel's event
+injectable *-- model
+hook *-- injectable
+hook -u-> injectable : inject <&script>
+component_listeners <--> injectable : EventBus
+package --> raw_listeners : <&script>
+raw_listeners --> model : <&script>
+@enduml
