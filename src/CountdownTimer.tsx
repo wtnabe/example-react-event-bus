@@ -8,8 +8,10 @@ export default function CountdownTimer ({ timer }): JSX.Element {
   const [time, setTime] = useState(timer.remain)
   const [state, setState] = useState(timer.state)
 
-  on('start, stop, done, reset', () => {
-    setState(timer.state)
+  ;['start', 'stop', 'done', 'reset'].forEach((event) => {
+    on((event), () => {
+      setState(timer.state)
+    })
   })
   on('countdown', (e: any) => {
     setTime(e)
